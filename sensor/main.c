@@ -5,9 +5,16 @@ const float heater_voltage = 13.8;
 const float heater_power = heater_voltage * heater_voltage / heater_resistance;
 /* Paul, you want to take this one? This should return the mass flow
 rate given the temperature of the two sensors in the tube */
-float get_mass_flow(float temp1, float temp2){
+float get_heat_capacity(float temp)
+{
+    
+float get_mass_flow(float temp1, float temp2, float cp)
+{
+    float dtemp = temp1 - temp2;
+    
+    M=Kq/(Cp*dtemp)
 
-    return 0.0;
+    return M;
 }
 
 /* Spencer, you want to do these? you should be able to adapt the code you have from your 4020 lab for these. IDK how you connected yours, but the ones on our tube are connected like so:
