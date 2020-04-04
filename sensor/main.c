@@ -1,55 +1,67 @@
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <arpa/inet.h>
 
+#include "massflow.h"
+#include "analyzer.h"
 
-const float heater_resistance = 40; // Ohms
-const float heater_voltage = 13.8;
-const float heater_power = heater_voltage * heater_voltage / heater_resistance;
-float Kq = 1;
-float Cp = 1;
-/* Paul, you want to take this one? This should return the mass flow
-rate given the temperature of the two sensors in the tube */
-float get_heat_capacity(float temp)
-{
-    return 1.0;
-}
-    
-float get_mass_flow(float temp1, float temp2, float cp)
-{
-    float dtemp = temp1 - temp2;
-    
-    float M=Kq/(Cp*dtemp);
+#define PORT 8081
 
-    return M;
-}
-
-/* Spencer, you want to do these? you should be able to adapt the code you have from your 4020 lab for these. IDK how you connected yours, but the ones on our tube are connected like so:
-   1.8V
-     <
-     > - 10k resistor
-     <
-     O--- to BBB ADC
-     <
-     > - NTC thermistor
-     <
-     GND
- */
-
-float get_thermistor_temp(float resistance){
-
-    return 0.0;
-}
-
-float get_thermistor_resistance(float voltage){
-    return 0.0;
-}
-
-float get_thermistor_voltage(int thermistor_number){
-    return 0.0;
-}
-
+pthread_t analyzer_recv;
 
 // I (Michael) can fill this in with the networking code to send it to
 // the server
 int main(int argc, char** argv){
+
+
+    struct sockaddr_in address;
+    socklen_t addrlen = sizeof(address);
+    int server_fd;
+    int new_socket;
+
+    if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0){
+	perror("Socket failed");
+	exit(-1);
+    }
+
+    int opt = 1;
+
+    if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))){
+	perror("setsockopt");
+	exit(-1);
+    }
+
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(PORT);
+
+    if(bind(server_fd, (const struct sockaddr*) &address,
+	    sizeof(address)) < 0){
+	perror("bind");
+	exit(-1);
+    }
+
+    if(listen(server_fd, 3) < 0){
+	perror("listen");
+	exit(-1);
+    }
+
+    if((new_socket = accept(server_fd, (struct sockaddr*)&address,
+			    &addrlen)) < 0){
+	perror("accept");
+	exit(-1);
+    }
+
+    if(pthread_create(&analyzer_recv, NULL, &AnalyzerReceive, &new_socket) != 0){
+	perror("error creating thread");
+	exit(-1);
+    }
+
+    while(1){}
 
     return 1;
 }
