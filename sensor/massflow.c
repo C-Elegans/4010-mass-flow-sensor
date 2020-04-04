@@ -33,6 +33,7 @@ float get_mass_flow(float temp1, float temp2, float cp)
      GND
  */
 
+
 float get_thermistor_temp(float resistance){
 
     return 0.0;
@@ -44,4 +45,11 @@ float get_thermistor_resistance(float voltage){
 
 float get_thermistor_voltage(int thermistor_number){
     return 0.0;
+}
+
+float get_temperature(int thermistor_number){
+    float voltage = get_thermistor_voltage(thermistor_number);
+    float resistance = get_thermistor_resistance(voltage);
+    float temp = get_thermistor_temp(resistance);
+    return temp;
 }

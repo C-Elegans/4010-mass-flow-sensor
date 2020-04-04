@@ -1,4 +1,4 @@
-OFILES=main.o massflow.o analyzer.o
+OFILES=main.o massflow.o analyzer.o adcthread.o
 
 CFLAGS=-O0 -g
 LDFLAGS=-lpthread

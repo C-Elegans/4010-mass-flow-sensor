@@ -6,12 +6,12 @@
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
 
-#include "massflow.h"
 #include "analyzer.h"
+#include "adcthread.h"
 
 #define PORT 8081
 
-pthread_t analyzer_recv;
+pthread_t analyzer_recv, adc_send;
 
 // I (Michael) can fill this in with the networking code to send it to
 // the server
@@ -57,6 +57,11 @@ int main(int argc, char** argv){
     }
 
     if(pthread_create(&analyzer_recv, NULL, &AnalyzerReceive, &new_socket) != 0){
+	perror("error creating thread");
+	exit(-1);
+    }
+
+    if(pthread_create(&adc_send, NULL, &AdcSendData, &new_socket) != 0){
 	perror("error creating thread");
 	exit(-1);
     }

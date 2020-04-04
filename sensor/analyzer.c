@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 long start = 0;
-useconds_t delay;
+useconds_t delay = 100000;
 
 void *AnalyzerReceive(void *arg){
     int *new_socket = arg;
