@@ -2,7 +2,7 @@
 
 const float heater_resistance = 40; // Ohms
 const float heater_voltage = 13.8;
-const float heater_power = heater_voltage * heater_voltage / heater_resistance;
+float heater_power = heater_voltage * heater_voltage / heater_resistance;
 float Kq = 1;
 float Cp = 1;
 /* Paul, you want to take this one? This should return the mass flow

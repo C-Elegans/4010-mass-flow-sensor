@@ -23,6 +23,7 @@ public class oscData implements IData
 		{
 			// Hard-code our socket data to BBB for now
 			sock = new Socket( "192.168.7.2", 8081 );
+		    //sock = new Socket("127.0.0.1", 8081);
 
 			in = new BufferedReader(new InputStreamReader( sock.getInputStream() ) );
 			out = new PrintWriter( sock.getOutputStream() );
