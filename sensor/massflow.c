@@ -1,8 +1,9 @@
 #include "massflow.h"
 
-const float heater_resistance = 40; // Ohms
-const float heater_voltage = 13.8;
-float heater_power = heater_voltage * heater_voltage / heater_resistance;
+#define HEATER_RESISTANCE 40.0
+#define HEATER_VOLTAGE 13.8
+#define HEATER_POWER ((HEATER_VOLTAGE) * (HEATER_VOLTAGE) / HEATER_RESISTANCE)
+
 float Kq = 1;
 float Cp = 1;
 /* Paul, you want to take this one? This should return the mass flow
