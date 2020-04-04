@@ -3,16 +3,20 @@
 const float heater_resistance = 40; // Ohms
 const float heater_voltage = 13.8;
 const float heater_power = heater_voltage * heater_voltage / heater_resistance;
+float Kq = 1;
+float Cp = 1;
 /* Paul, you want to take this one? This should return the mass flow
 rate given the temperature of the two sensors in the tube */
 float get_heat_capacity(float temp)
 {
+    return 1.0;
+}
     
 float get_mass_flow(float temp1, float temp2, float cp)
 {
     float dtemp = temp1 - temp2;
     
-    M=Kq/(Cp*dtemp)
+    float M=Kq/(Cp*dtemp);
 
     return M;
 }
