@@ -6,20 +6,31 @@
 
 float Kq = 1;
 float Cp = 1;
-/* Paul, you want to take this one? This should return the mass flow
-rate given the temperature of the two sensors in the tube */
+
+/* Calculating the Heat capacities of air 
+This function calculates the Heat Capacities of Air (Cp).
+Made a statistical plot, based on the heat capacities or air table.
+Found the best fitted cubic function according to it's data.
+Temperature needs to be in Kelvin.
+*/
+
 float get_heat_capacity(float temp)
 {
     float cp;
-    cp = ((-0.000000000129142)*(temp^3))+((0.00000032309586)*(temp^2))+(-0.00004703434*temp)+ 0.9917484975;
+    cp = ((-1.29142e-10)*(temp^3))+((3.2309586e-7)*(temp^2))+(-4.703434e-5*temp)+ 0.9917484975;
     return cp;
 }
-    
+
+/* Calculating the Mass flow 
+This function calculates the Mass flow.
+Parameters are the temp1 and temp2 from the thermistors, and the heat capacity of the air.
+*/
+
 float get_mass_flow(float temp1, float temp2, float cp)
 {
     float dtemp = temp1 - temp2;
     
-    float M=Kq/(Cp*dtemp);
+    float M=(K*HEATER_POWER)/(Cp*dtemp);
 
     return M;
 }
