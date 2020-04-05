@@ -1,7 +1,7 @@
 OFILES=main.o massflow.o analyzer.o adcthread.o
 
 CFLAGS=-O0 -g
-LDFLAGS=-lpthread
+LDFLAGS=-lpthread -lm
 
 main: $(OFILES)
 	$(CC) $(LDFLAGS) -o $@ $^

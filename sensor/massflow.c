@@ -1,4 +1,5 @@
 #include "massflow.h"
+#include <math.h>
 
 #define HEATER_RESISTANCE 40.0
 #define HEATER_VOLTAGE 13.8
@@ -7,15 +8,18 @@
 
 /* Calculating the Heat capacities of air 
 This function calculates the Heat Capacities of Air (Cp).
-Made a statistical plot, based on the heat capacities or air table.
+Made a statistical plot, based on the heat capacities or air table at
+https://www.ohio.edu/mechanical/thermo/property_tables/air/air_Cp_Cv.html.
 Found the best fitted cubic function according to it's data.
 Temperature needs to be in Kelvin.
 */
 
 float get_heat_capacity(float temp)
 {
-    float cp;
-    cp = ((-1.29142e-10)*(temp^3))+((3.2309586e-7)*(temp^2))+(-4.703434e-5*temp)+ 0.9917484975;
+    float cp = ((-1.29142e-10)*powf(temp, 3.0)) +
+	       ((3.2309586e-7)*powf(temp, 2.0)) +
+	       (-4.703434e-5*temp) +
+	        0.9917484975;
     return cp;
 }
 
@@ -24,8 +28,9 @@ This function calculates the Mass flow.
 Parameters are the temp1 and temp2 from the thermistors, and the heat capacity of the air.
 */
 
-float get_mass_flow(float temp1, float temp2, float cp)
+float get_mass_flow(float temp1, float temp2)
 {
+    float cp = get_heat_capacity(temp1);
     float dtemp = temp1 - temp2;
     
     float M=(K*HEATER_POWER)/(cp*dtemp);
