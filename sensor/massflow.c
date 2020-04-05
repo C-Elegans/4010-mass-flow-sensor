@@ -10,7 +10,9 @@ float Cp = 1;
 rate given the temperature of the two sensors in the tube */
 float get_heat_capacity(float temp)
 {
-    return 1.0;
+    float cp;
+    cp = ((-0.000000000129142)*(temp^3))+((0.00000032309586)*(temp^2))+(-0.00004703434*temp)+ 0.9917484975;
+    return cp;
 }
     
 float get_mass_flow(float temp1, float temp2, float cp)
