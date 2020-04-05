@@ -3,9 +3,7 @@
 #define HEATER_RESISTANCE 40.0
 #define HEATER_VOLTAGE 13.8
 #define HEATER_POWER ((HEATER_VOLTAGE) * (HEATER_VOLTAGE) / HEATER_RESISTANCE)
-
-float Kq = 1;
-float Cp = 1;
+#define K 1
 
 /* Calculating the Heat capacities of air 
 This function calculates the Heat Capacities of Air (Cp).
@@ -30,7 +28,7 @@ float get_mass_flow(float temp1, float temp2, float cp)
 {
     float dtemp = temp1 - temp2;
     
-    float M=(K*HEATER_POWER)/(Cp*dtemp);
+    float M=(K*HEATER_POWER)/(cp*dtemp);
 
     return M;
 }
