@@ -10,3 +10,7 @@ void adc_init(void);
 extern FILE* temp1;
 extern FILE* temp2;
 extern FILE* angle;
+
+#define TEMP1_PIN 5
+#define TEMP2_PIN 3
+#define ANGLE_PIN 1

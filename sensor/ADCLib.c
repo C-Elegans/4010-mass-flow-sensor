@@ -52,6 +52,8 @@ float getVoltage(FILE * in)
 
 	float voltage = value_int*VRef/4095;
 
+	rewind(in);
+
 	return voltage;
 } // end of getVoltage
 
