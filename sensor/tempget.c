@@ -25,9 +25,9 @@ int main(){
 	printf("Type in the number\n");
 	scanf("%f", &adcValue);
 	printf("adcValue %f\n", adcValue);
-	r_therm = abs((((1/adcValue)-1)*r_bias));
+	r_therm = r_bias * adcValue/(1.8 - adcValue);
 	printf("r_therm %f\n", r_therm);
-	t_c = ((10*((Bvalue/(log(r_therm/r_alpha)))-c2kelvin))/10);
+	t_c = ((10*((Bvalue/(logf(r_therm/r_alpha)))-c2kelvin))/10);
 	printf("adcValue = %f and TempC = %f\n\n", adcValue, t_c);
 	}
 
