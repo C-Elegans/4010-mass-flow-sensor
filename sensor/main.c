@@ -8,6 +8,7 @@
 
 #include "analyzer.h"
 #include "adcthread.h"
+#include "massflow.h"
 
 #define PORT 8081
 
@@ -17,6 +18,7 @@ pthread_t analyzer_recv, adc_send;
 // the server
 int main(int argc, char** argv){
 
+    adc_init();
 
     struct sockaddr_in address;
     socklen_t addrlen = sizeof(address);

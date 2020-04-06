@@ -10,11 +10,11 @@ void *AdcSendData(void* arg){
 
     while(1){
 	if(start){
-	    float t1 = get_temperature(1);
+	    float t1 = get_temperature(temp1);
 
-	    float t2 = get_temperature(2);
+	    float t2 = get_temperature(temp2);
 
-	    float mass = get_mass_flow(t1, t2, 1.0);
+	    float mass = get_mass_flow(t1, t2);
 	    char buf[1024];
 
 	    snprintf(buf, sizeof(buf), "%f\n", mass);

@@ -55,22 +55,33 @@ float tokelvin(float tempc){
      GND
  */
 
+FILE* temp1 = NULL;
+FILE* temp2 = NULL;
+FILE* angle = NULL;
 
+__attribute__((weak))
 float get_thermistor_temp(float resistance){
 
     return 0.0;
 }
 
+__attribute__((weak))
 float get_thermistor_resistance(float voltage){
     return 0.0;
 }
 
-float get_thermistor_voltage(int thermistor_number){
+__attribute__((weak))
+float get_adc_voltage(FILE* adcfile){
     return 0.0;
 }
 
-float get_temperature(int thermistor_number){
-    float voltage = get_thermistor_voltage(thermistor_number);
+__attribute__((weak))
+void adc_init(void){
+
+}
+
+float get_temperature(FILE* thermistor_file){
+    float voltage = get_adc_voltage(thermistor_file);
     float resistance = get_thermistor_resistance(voltage);
     float temp = get_thermistor_temp(resistance);
     return temp;
