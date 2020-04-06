@@ -1,4 +1,5 @@
 #include "massflow.h"
+#include "ADC.h"
 #include <math.h>
 
 #define HEATER_RESISTANCE 40.0
@@ -70,18 +71,14 @@ float get_thermistor_resistance(float voltage){
     return 0.0;
 }
 
-__attribute__((weak))
-float get_adc_voltage(FILE* adcfile){
-    return 0.0;
-}
-
-__attribute__((weak))
 void adc_init(void){
-
+    temp1 = setADC(TEMP1_PIN);
+    temp2 = setADC(TEMP2_PIN);
+    angle = setADC(ANGLE_PIN);
 }
 
 float get_temperature(FILE* thermistor_file){
-    float voltage = get_adc_voltage(thermistor_file);
+    float voltage = getVoltage(thermistor_file);
     float resistance = get_thermistor_resistance(voltage);
     float temp = get_thermistor_temp(resistance);
     return temp;
