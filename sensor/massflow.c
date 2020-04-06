@@ -74,7 +74,7 @@ FILE* angle = NULL;
 
 float get_thermistor_temp(float resistance){
 
-    float t_c = ((10*((Bvalue/(logf(resistance/r_alpha)))-c2kelvin))/10);
+    float t_c = (Bvalue/(logf(resistance/r_alpha)))-c2kelvin;
     return t_c;
 }
 
