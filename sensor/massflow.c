@@ -7,6 +7,13 @@
 #define HEATER_POWER ((HEATER_VOLTAGE) * (HEATER_VOLTAGE) / HEATER_RESISTANCE)
 #define K 1
 
+const float r_bias = 10e3;
+const float vadc = 1.8;
+
+const float r_alpha   = 0.09919;        // Ro * e^(-B/To)  in K, To= 298K
+const float c2kelvin  = 273.15;         // Celsius to Kelvin offset
+const float Bvalue    = 3435;           // from thermistor datasheet
+
 /* Calculating the Heat capacities of air 
 This function calculates the Heat Capacities of Air (Cp).
 Made a statistical plot, based on the heat capacities or air table at
@@ -65,15 +72,15 @@ FILE* temp1 = NULL;
 FILE* temp2 = NULL;
 FILE* angle = NULL;
 
-__attribute__((weak))
 float get_thermistor_temp(float resistance){
 
-    return 0.0;
+    float t_c = ((10*((Bvalue/(logf(resistance/r_alpha)))-c2kelvin))/10);
+    return t_c;
 }
 
-__attribute__((weak))
 float get_thermistor_resistance(float voltage){
-    return 0.0;
+    float r_therm = r_bias * voltage/(vadc - voltage);
+    return r_therm;
 }
 
 void adc_init(void){
