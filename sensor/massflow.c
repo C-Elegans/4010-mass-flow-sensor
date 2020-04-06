@@ -34,10 +34,15 @@ float get_mass_flow(float temp1, float temp2)
 {
     float cp = get_heat_capacity(temp1);
     float dtemp = temp1 - temp2;
+    if(fabsf(dtemp) <= 2.0){
+	return 0;
+    }
+    else{
     
-    float M=(K*HEATER_POWER)/(cp*dtemp);
+	float M=(K*HEATER_POWER)/(cp*dtemp);
 
-    return M;
+	return M;
+    }
 }
 
 float tokelvin(float tempc){
