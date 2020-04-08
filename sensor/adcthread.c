@@ -14,9 +14,13 @@ void *AdcSendData(void* arg){
 
 	    char buf[1024];
 
-	    snprintf(buf, sizeof(buf), "%f\n", mass_flow_rate);
+	    float t1 = get_temperature(temp1);
+	    float t2 = get_temperature(temp2);
+	    float dt = t2-t1;
+
+	    snprintf(buf, sizeof(buf), "%f %f\n", dt, mass_flow_rate);
 	    send(*new_socket, buf, strlen(buf), 0);
-	    printf("mass flow %f\n", mass_flow_rate);
+	    //printf("mass flow %s\n", buf);
 	}
 	usleep(delay);
     }

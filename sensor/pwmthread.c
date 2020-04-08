@@ -8,7 +8,7 @@
 #define SECONDS (1000 * MILLISECONDS)
 #define PWM_THREAD_LOOP_RATE (500 * MILLISECONDS)
 #define AMBIENT_TEMP_TIMEOUT (5 * SECONDS)
-#define DT_TARGET 0.75
+#define DT_TARGET 1.5
 
 #define PWM_STEP 4
 #define PWM_PERIOD 1000
@@ -18,25 +18,34 @@ float mass_flow_rate = 0;
 float ambient_temp;
 int pwm_duty_cycle = 0;
 
+#define KU 200.0
+#define PU 18.0
 
-float kp = 500.0;
-float ki = 0.0;
-float kd = 0.0;
+#define T0 ((float)PWM_THREAD_LOOP_RATE/SECONDS)
+
+float kp = 150;
+float ki = 5;
+float kd = 0;
 
 static float integral_error = 0;
 static float past_error = 0;
 void get_pwm_duty_cycle(float absdiff){
 
     float error = DT_TARGET - absdiff;
+    float de = error - past_error;
 
     pwm_duty_cycle = kp * error + ki * integral_error
-	- kd * past_error; 
+	+ kd * de; 
+
+    printf("P: %f, I: %f, D: %f\n", kp * error,
+	   ki * integral_error,
+	   kd * de);
 
     if(pwm_duty_cycle < 0) pwm_duty_cycle = 0;
     if(pwm_duty_cycle > PWM_PERIOD) pwm_duty_cycle = PWM_PERIOD;
     
-    integral_error += absdiff;
-    past_error = absdiff;
+    integral_error += error;
+    past_error = error;
 }
 
 
