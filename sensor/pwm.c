@@ -37,6 +37,14 @@ struct pwm_context* create_pwm_context(){
     ctx->period = fopen(buf, "w");
     if(!ctx->period) goto err;
 
+    snprintf(buf, sizeof(buf), "%s/enable", ctx->directory);
+    printf(buf);
+    FILE *enable = fopen(buf, "w");
+    if(!ctx->period) goto err;
+    fprintf(enable, "1");
+    fclose(enable);
+	
+
     return ctx;
 
  err:
@@ -47,7 +55,6 @@ struct pwm_context* create_pwm_context(){
 }
 void set_period(struct pwm_context* ctx, int period){
     ftruncate(fileno(ctx->period), 0);
-    printf("set period cycle: %d\n", period * PWM_MULTIPLIER);
     if(ctx->period){
 	fprintf(ctx->period, "%d", period * PWM_MULTIPLIER);
 	rewind(ctx->period);
@@ -55,7 +62,6 @@ void set_period(struct pwm_context* ctx, int period){
 }
 void set_duty_cycle(struct pwm_context* ctx, int duty){
     ftruncate(fileno(ctx->duty_cycle), 0);
-    printf("set duty cycle: %d\n", duty * PWM_MULTIPLIER);
     if(ctx->duty_cycle){
 	fprintf(ctx->duty_cycle, "%d", duty * PWM_MULTIPLIER);
 	rewind(ctx->duty_cycle);
