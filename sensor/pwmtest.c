@@ -11,7 +11,7 @@ int main(int argc, char** argv){
 	    set_duty_cycle(pwm, duty);
 	    usleep(1000 * 20);
 	}
-	for(duty = 1000; duty > 0; duty-= 10){
+	for(; duty > 1; duty-= 10){
 	    set_duty_cycle(pwm, duty);
 	    usleep(1000 * 20);
 	}

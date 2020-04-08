@@ -1,4 +1,4 @@
-
+#define PWM_MULTIPLIER 20000
 struct pwm_context;
 
 struct pwm_context* create_pwm_context();
