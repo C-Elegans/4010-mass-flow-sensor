@@ -13,8 +13,9 @@
 #define PWM_STEP 4
 #define PWM_PERIOD 1000
 
-float mass_flow_rate = 0;
-float heater_multiplier = 0;
+volatile float mass_flow_rate = 0;
+volatile float heater_multiplier = 0;
+pthread_mutex_t pwm_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 float ambient_temp;
 int pwm_duty_cycle = 0;
@@ -51,6 +52,7 @@ void get_pwm_duty_cycle(float absdiff){
 
 
 void pwm_thread(void* data){
+
     struct pwm_context *ctx =  create_pwm_context();
     set_period(ctx, PWM_PERIOD);
     set_duty_cycle(ctx, 0);
@@ -59,6 +61,7 @@ void pwm_thread(void* data){
     ambient_temp = get_temperature(temp1);
 
     while(1){
+	pthread_mutex_lock(&pwm_mutex);
 	float t1 = get_temperature(temp1);
 	float t2 = get_temperature(temp2);
 	float absdiff = fabsf(t1-t2);
@@ -69,6 +72,7 @@ void pwm_thread(void* data){
 	heater_multiplier = (float)pwm_duty_cycle/PWM_PERIOD;
 
 	mass_flow_rate = get_mass_flow(t1, t2, heater_multiplier);
+	pthread_mutex_unlock(&pwm_mutex);
 				       
 
 	printf("t1: %f, t2: %f, dt: %f, duty: %d, flow: %f\n",

@@ -14,13 +14,17 @@ void *AdcSendData(void* arg){
 
 	    char buf[1024];
 
+	    pthread_mutex_lock(&pwm_mutex);
 	    float t1 = get_temperature(temp1);
 	    float t2 = get_temperature(temp2);
 	    float dt = t2-t1;
+	    float mf = mass_flow_rate;
+	    float hm = heater_multiplier;
+	    pthread_mutex_unlock(&pwm_mutex);
 
 	    snprintf(buf, sizeof(buf), "{\"dt\": %f, \"massflow\": %f, "
 		     "\"heater_mult\": %f}\n",
-		     dt, mass_flow_rate, heater_multiplier);
+		     dt, mf, hm);
 	    send(*new_socket, buf, strlen(buf), 0);
 	    //printf("mass flow %s\n", buf);
 	}
