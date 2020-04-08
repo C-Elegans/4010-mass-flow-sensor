@@ -44,6 +44,9 @@ float get_mass_flow(float temp1, float temp2, float power_multiplier)
     
     float M=(K*HEATER_POWER * power_multiplier)/(cp*dtemp);
 
+    if(M > 100) M = 100;
+    if(M < -100) M = -100;
+
     return M;
 }
 

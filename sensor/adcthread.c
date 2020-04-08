@@ -18,7 +18,9 @@ void *AdcSendData(void* arg){
 	    float t2 = get_temperature(temp2);
 	    float dt = t2-t1;
 
-	    snprintf(buf, sizeof(buf), "%f %f\n", dt, mass_flow_rate);
+	    snprintf(buf, sizeof(buf), "{\"dt\": %f, \"massflow\": %f, "
+		     "\"heater_mult\": %f}\n",
+		     dt, mass_flow_rate, heater_multiplier);
 	    send(*new_socket, buf, strlen(buf), 0);
 	    //printf("mass flow %s\n", buf);
 	}

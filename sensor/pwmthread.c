@@ -14,6 +14,7 @@
 #define PWM_PERIOD 1000
 
 float mass_flow_rate = 0;
+float heater_multiplier = 0;
 
 float ambient_temp;
 int pwm_duty_cycle = 0;
@@ -65,14 +66,10 @@ void pwm_thread(void* data){
 	bool no_flow = false;
 
 	get_pwm_duty_cycle(absdiff);
+	heater_multiplier = (float)pwm_duty_cycle/PWM_PERIOD;
 
-	if(no_flow){
-	    mass_flow_rate = 0;
-	}
-	else{
-	    mass_flow_rate = get_mass_flow(t1, t2,
-					   (float)pwm_duty_cycle/PWM_PERIOD);
-	}
+	mass_flow_rate = get_mass_flow(t1, t2, heater_multiplier);
+				       
 
 	printf("t1: %f, t2: %f, dt: %f, duty: %d, flow: %f\n",
 	       t1, t2, absdiff, pwm_duty_cycle, mass_flow_rate);
