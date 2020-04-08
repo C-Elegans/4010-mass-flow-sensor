@@ -12,3 +12,7 @@ main: $(OFILES) $(SHADOWFILES)
 clean:
 	rm -f $(OFILES)
 	rm -f main
+
+
+pwmtest: pwmtest.o pwm.o
+	$(CC) $(LDFLAGS) -o $@ $^
