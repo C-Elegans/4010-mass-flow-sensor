@@ -1,4 +1,4 @@
-OFILES=main.o massflow.o analyzer.o adcthread.o ADCLib.o
+OFILES=main.o massflow.o analyzer.o adcthread.o ADCLib.o pwmthread.o pwm.o
 SHADOWFILES=$(patsubst %.c, %.o, $(wildcard shadow.c))
 
 CFLAGS=-O0 -g

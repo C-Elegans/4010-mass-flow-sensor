@@ -37,7 +37,7 @@ This function calculates the Mass flow.
 Parameters are the temp1 and temp2 from the thermistors, and the heat capacity of the air.
 */
 
-float get_mass_flow(float temp1, float temp2)
+float get_mass_flow(float temp1, float temp2, float power_multiplier)
 {
     float cp = get_heat_capacity(temp1);
     float dtemp = temp1 - temp2;
@@ -46,7 +46,7 @@ float get_mass_flow(float temp1, float temp2)
     }
     else{
     
-	float M=(K*HEATER_POWER)/(cp*dtemp);
+	float M=(K*HEATER_POWER * power_multiplier)/(cp*dtemp);
 
 	return M;
     }

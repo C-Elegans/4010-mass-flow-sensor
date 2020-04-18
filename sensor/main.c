@@ -9,10 +9,11 @@
 #include "analyzer.h"
 #include "adcthread.h"
 #include "massflow.h"
+#include "pwmthread.h"
 
 #define PORT 8081
 
-pthread_t analyzer_recv, adc_send;
+pthread_t analyzer_recv, adc_send, pwm_thread_var;
 
 // I (Michael) can fill this in with the networking code to send it to
 // the server
@@ -64,6 +65,11 @@ int main(int argc, char** argv){
     }
 
     if(pthread_create(&adc_send, NULL, &AdcSendData, &new_socket) != 0){
+	perror("error creating thread");
+	exit(-1);
+    }
+
+    if(pthread_create(&pwm_thread_var, NULL, &pwm_thread, NULL) != 0){
 	perror("error creating thread");
 	exit(-1);
     }

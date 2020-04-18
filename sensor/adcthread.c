@@ -1,6 +1,7 @@
 #include "adcthread.h"
 #include "analyzer.h"
 #include "massflow.h"
+#include "pwmthread.h"
 #include <string.h>
 #include <stdio.h>
 #include <sys/socket.h>
@@ -10,16 +11,12 @@ void *AdcSendData(void* arg){
 
     while(1){
 	if(start){
-	    float t1 = get_temperature(temp1);
 
-	    float t2 = get_temperature(temp2);
-
-	    float mass = get_mass_flow(t1, t2);
 	    char buf[1024];
 
-	    snprintf(buf, sizeof(buf), "%f\n", mass);
+	    snprintf(buf, sizeof(buf), "%f\n", mass_flow_rate);
 	    send(*new_socket, buf, strlen(buf), 0);
-	    printf("mass flow %f\n", mass);
+	    printf("mass flow %f\n", mass_flow_rate);
 	}
 	usleep(delay);
     }
