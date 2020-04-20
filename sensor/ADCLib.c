@@ -8,6 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 #define VRef 1.8
+#define AngleRef 300.0
 
 // Creating and returning the file pointer to the ADC virtual driver
 // For next revision, pass in the AIN number
@@ -41,6 +42,21 @@ FILE * setADC(int pin)
 
 // Convert the integer value representing the sampled voltage into a float
 // and return it
+
+float getAngle(FILE * in)
+{
+	char value_str[7];
+    	long int value_int = 0;
+
+        fread(&value_str, 6, 1, in);
+        value_int = strtol(value_str,NULL,0);
+
+	float angle = value_int*AngleRef/4095;
+
+	rewind(in);
+
+	return angle;
+} // end of getAngle
 	
 float getVoltage(FILE * in)
 {

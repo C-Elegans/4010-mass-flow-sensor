@@ -67,6 +67,11 @@ FILE* temp1 = NULL;
 FILE* temp2 = NULL;
 FILE* angle = NULL;
 
+float get_potentiometer(FILE * potentiometer_file){
+	float angle = getAngle(potentiometer_file);
+	return angle;
+}
+
 float get_thermistor_temp(float resistance){
 
     float t_c = (Bvalue/(logf(resistance/r_alpha)))-c2kelvin;

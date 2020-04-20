@@ -17,6 +17,7 @@ void *AdcSendData(void* arg){
 	    float t1 = get_temperature(temp1);
 	    float t2 = get_temperature(temp2);
 	    float dt = t2-t1;
+		float a1 = get_potentiometer(angle); //Not sure how to integrate this properly
 
 	    snprintf(buf, sizeof(buf), "%f %f\n", dt, mass_flow_rate);
 	    send(*new_socket, buf, strlen(buf), 0);
