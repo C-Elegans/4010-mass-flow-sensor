@@ -1,4 +1,4 @@
-// A C library that sets and reads the AIN0 file to display 
+// A C library that sets and reads the AIN0 file to display
 // a single captured voltage on a BeagleBone Black
 // Copyright 2020 by Tom Fallon
 
@@ -15,7 +15,7 @@
 
 FILE * setADC(int pin)
 {
-    /* Access to the ADC inputs on the BBB is exported into the 
+    /* Access to the ADC inputs on the BBB is exported into the
        virtual file system in_voltageX_raw files as seen below
     */
     char ainfile[128];
@@ -23,19 +23,19 @@ FILE * setADC(int pin)
     const char* dir = "/sys/bus/iio/devices/iio:device0/";
     // printf("Have directory string %s\n",dir);
 
-	
-    // Create string and allocate memory for the virtual path and filename	
+
+    // Create string and allocate memory for the virtual path and filename
     char path[512];
 
     // Declare our file pointer
     FILE *in;
-	
+
     // Initialize our path string
     snprintf(path, sizeof(path), "%s%s", dir, ainfile);
     // printf("Path is %s\n", path);
-    // Open our virtual file to device AIN0 for read	
+    // Open our virtual file to device AIN0 for read
     in = fopen(path, "r");
-    // Free our allocated memory 
+    // Free our allocated memory
     return in;
 
 } // end of setADC
@@ -45,37 +45,37 @@ FILE * setADC(int pin)
 
 float getAngle(FILE * in)
 {
-	char value_str[7];
-    	long int value_int = 0;
+        char value_str[7];
+            long int value_int = 0;
 
         fread(&value_str, 6, 1, in);
         value_int = strtol(value_str,NULL,0);
 
-	float angle = value_int*AngleRef/4095;
+        float angle = value_int*AngleRef/4095;
 
-	rewind(in);
+        rewind(in);
 
-	return angle;
+        return angle;
 } // end of getAngle
-	
+
 float getVoltage(FILE * in)
 {
-	char value_str[7];
-    	long int value_int = 0;
+        char value_str[7];
+            long int value_int = 0;
 
         fread(&value_str, 6, 1, in);
         value_int = strtol(value_str,NULL,0);
 
-	float voltage = value_int*VRef/4095;
+        float voltage = value_int*VRef/4095;
 
-	rewind(in);
+        rewind(in);
 
-	return voltage;
+        return voltage;
 } // end of getVoltage
 
 // Close our file pointer
 
 int closeADC(FILE * in)
 {
-	fclose(in);
+        fclose(in);
 } //end of library

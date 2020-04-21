@@ -24,7 +24,7 @@ void config_pin(){
 
 struct pwm_context* create_pwm_context(){
     config_pin();
-    
+
     struct pwm_context *ctx = malloc(sizeof(*ctx));
     ctx->pin = pwm_pin;
     ctx->directory = pwm_path;
@@ -43,7 +43,7 @@ struct pwm_context* create_pwm_context(){
     if(!ctx->period) goto err;
     fprintf(enable, "1");
     fclose(enable);
-	
+
 
     return ctx;
 
@@ -56,14 +56,14 @@ struct pwm_context* create_pwm_context(){
 void set_period(struct pwm_context* ctx, int period){
     ftruncate(fileno(ctx->period), 0);
     if(ctx->period){
-	fprintf(ctx->period, "%d", period * PWM_MULTIPLIER);
-	rewind(ctx->period);
+        fprintf(ctx->period, "%d", period * PWM_MULTIPLIER);
+        rewind(ctx->period);
     }
 }
 void set_duty_cycle(struct pwm_context* ctx, int duty){
     ftruncate(fileno(ctx->duty_cycle), 0);
     if(ctx->duty_cycle){
-	fprintf(ctx->duty_cycle, "%d", duty * PWM_MULTIPLIER);
-	rewind(ctx->duty_cycle);
+        fprintf(ctx->duty_cycle, "%d", duty * PWM_MULTIPLIER);
+        rewind(ctx->duty_cycle);
     }
 }

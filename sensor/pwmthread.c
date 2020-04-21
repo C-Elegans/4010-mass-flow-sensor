@@ -37,15 +37,15 @@ void get_pwm_duty_cycle(float absdiff){
     float de = error - past_error;
 
     pwm_duty_cycle = kp * error + ki * integral_error
-	+ kd * de; 
+        + kd * de;
 
     printf("P: %f, I: %f, D: %f\n", kp * error,
-	   ki * integral_error,
-	   kd * de);
+           ki * integral_error,
+           kd * de);
 
     if(pwm_duty_cycle < 0) pwm_duty_cycle = 0;
     if(pwm_duty_cycle > PWM_PERIOD) pwm_duty_cycle = PWM_PERIOD;
-    
+
     integral_error += error;
     past_error = error;
 }
@@ -61,26 +61,26 @@ void pwm_thread(void* data){
     ambient_temp = get_temperature(temp1);
 
     while(1){
-	pthread_mutex_lock(&pwm_mutex);
-	float t1 = get_temperature(temp1);
-	float t2 = get_temperature(temp2);
-	float absdiff = fabsf(t1-t2);
-	//float mintempdiff = fabsf(fminf(t1, t2) - ambient_temp);
-	bool no_flow = false;
+        pthread_mutex_lock(&pwm_mutex);
+        float t1 = get_temperature(temp1);
+        float t2 = get_temperature(temp2);
+        float absdiff = fabsf(t1-t2);
+        //float mintempdiff = fabsf(fminf(t1, t2) - ambient_temp);
+        bool no_flow = false;
 
-	get_pwm_duty_cycle(absdiff);
-	heater_multiplier = (float)pwm_duty_cycle/PWM_PERIOD;
+        get_pwm_duty_cycle(absdiff);
+        heater_multiplier = (float)pwm_duty_cycle/PWM_PERIOD;
 
-	mass_flow_rate = get_mass_flow(t1, t2, heater_multiplier);
-	pthread_mutex_unlock(&pwm_mutex);
-				       
+        mass_flow_rate = get_mass_flow(t1, t2, heater_multiplier);
+        pthread_mutex_unlock(&pwm_mutex);
 
-	printf("t1: %f, t2: %f, dt: %f, duty: %d, flow: %f\n",
-	       t1, t2, absdiff, pwm_duty_cycle, mass_flow_rate);
-	
-	set_duty_cycle(ctx, pwm_duty_cycle);
-	
-	usleep(PWM_THREAD_LOOP_RATE);
+
+        printf("t1: %f, t2: %f, dt: %f, duty: %d, flow: %f\n",
+               t1, t2, absdiff, pwm_duty_cycle, mass_flow_rate);
+
+        set_duty_cycle(ctx, pwm_duty_cycle);
+
+        usleep(PWM_THREAD_LOOP_RATE);
     }
 
 }

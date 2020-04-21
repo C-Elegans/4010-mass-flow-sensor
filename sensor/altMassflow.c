@@ -18,10 +18,10 @@ Temperature needs to be in Celcius
 float get_heat_capacity(float temp)
 {
     float tempk = tokelvin(temp);
-    float cp = ((-1.29142e-10)*powf(tempk, 3.0)) +
-	       ((3.2309586e-7)*powf(tempk, 2.0)) +
-	       (-4.703434e-5*tempk) +
-	        0.9917484975;
+    float cp = ((-1.29142e-10)*powf(tempk, 3.0))
+               ((3.2309586e-7)*powf(tempk, 2.0))
+               (-4.703434e-5*tempk)
+                0.9917484975;
     return cp;
 }
 
@@ -35,13 +35,13 @@ float get_mass_flow(float temp1, float temp2)
     float cp = get_heat_capacity(temp1);
     float dtemp = temp1 - temp2;
     if(fabsf(dtemp) <= 2.0){
-	return 0;
+        return 0;
     }
     else{
     
-	float M=(K*HEATER_POWER)/(cp*dtemp);
+        float M=(K*HEATER_POWER)/(cp*dtemp);
 
-	return M;
+        return M;
     }
 }
 
@@ -67,13 +67,13 @@ FILE* angle = NULL;
 
 __attribute__((weak))
 float get_thermistor_temp(float resistance){
-	temp = ((10*((3435/(log(resistance/0.09919)))-273.15))/10);
+        temp = ((10*((3435/(log(resistance/0.09919)))-273.15))/10);
     return temp;
 }
 
 __attribute__((weak))
 float get_thermistor_resistance(float voltage){
-	resistance = abs((((1/voltage)-1)*10000));	//Michael, change 10000 to whatever reflects the resistor you are using
+        resistance = abs((((1/voltage)-1)*10000));        //Michael, change 10000 to whatever reflects the resistor you are using
     return resistance;
 }
 

@@ -25,10 +25,10 @@ Temperature needs to be in Celcius
 float get_heat_capacity(float temp)
 {
     float tempk = tokelvin(temp);
-    float cp = ((-1.29142e-10)*powf(tempk, 3.0)) +
-	       ((3.2309586e-7)*powf(tempk, 2.0)) +
-	       (-4.703434e-5*tempk) +
-	        0.9917484975;
+    float cp = ((-1.29142e-10)*powf(tempk, 3.0))
+               ((3.2309586e-7)*powf(tempk, 2.0))
+               (-4.703434e-5*tempk)
+                0.9917484975;
     return cp;
 }
 
@@ -71,8 +71,8 @@ FILE* temp2 = NULL;
 FILE* angle = NULL;
 
 float get_potentiometer(FILE * potentiometer_file){
-	float angle = getAngle(potentiometer_file);
-	return angle;
+        float angle = getAngle(potentiometer_file);
+        return angle;
 }
 
 float get_thermistor_temp(float resistance){
