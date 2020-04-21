@@ -7,6 +7,8 @@
 #define HEATER_POWER ((HEATER_VOLTAGE) * (HEATER_VOLTAGE) / HEATER_RESISTANCE)
 #define K 1
 
+#define AngleRef 300.0
+
 const float r_bias = 10e3;
 const float vadc = 1.8;
 
@@ -71,8 +73,8 @@ FILE* temp2 = NULL;
 FILE* angle = NULL;
 
 float get_potentiometer(FILE * potentiometer_file){
-        float angle = getAngle(potentiometer_file);
-        return angle;
+    float angle = getVoltage(potentiometer_file)*AngleRef/VRef;
+    return angle;
 }
 
 float get_thermistor_temp(float resistance){
