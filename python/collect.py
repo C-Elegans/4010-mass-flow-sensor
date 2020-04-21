@@ -18,13 +18,17 @@ ax2 = fig.add_subplot(2, 1, 2)
 ydata = [0]
 heater_data = [0]
 massdata = [0]
+angle_data = [0]
 line_dt, = ax1.plot(ydata, c='g', label='delta t')
 ax_heater = ax1.twinx()
 line_heater, = ax_heater.plot(ydata, c='r', label='heater %')
 line_massflow, = ax2.plot(massdata)
+ax_angle = ax2.twinx()
+line_angle, = ax_angle.plot(ydata, c='b', label='angle (deg)')
 ax1.set_ylim([-ymax, ymax])
 ax_heater.set_ylim([0, 1])
 ax2.set_ylim([-4, 4])
+ax_angle.set_ylim([0, 300])
 plt.show()
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -42,12 +46,15 @@ while True:
     ydata.append(data['dt'])
     massdata.append(data['massflow'])
     heater_data.append(data['heater_mult'])
+    angle_data.append(data['angle'])
     line_dt.set_ydata(ydata)
     line_dt.set_xdata(np.arange(len(ydata)) * delay)
     line_heater.set_ydata(heater_data)
     line_heater.set_xdata(np.arange(len(ydata)) * delay)
     line_massflow.set_ydata(massdata)
     line_massflow.set_xdata(np.arange(len(massdata)) * delay)
+    line_angle.set_ydata(angle_data)
+    line_angle.set_xdata(np.arange(len(angle_data)) * delay)
 
     maxtime = len(ydata) * delay
     ax1.set_xlim([max(0, maxtime - max_entries), maxtime])
