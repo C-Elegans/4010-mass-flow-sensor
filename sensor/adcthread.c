@@ -24,8 +24,8 @@ void *AdcSendData(void* arg){
             float a1 = get_potentiometer(angle); //Not sure how to integrate this properly
 
             snprintf(buf, sizeof(buf), "{\"dt\": %f, \"massflow\": %f, "
-                     "\"heater_mult\": %f}\n",
-                     dt, mf, hm);
+                     "\"heater_mult\": %f, \"angle\": %f}\n",
+                     dt, mf, hm, a1);
             send(*new_socket, buf, strlen(buf), 0);
             //printf("mass flow %s\n", buf);
         }
