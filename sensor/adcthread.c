@@ -21,6 +21,7 @@ void *AdcSendData(void* arg){
 	    float mf = mass_flow_rate;
 	    float hm = heater_multiplier;
 	    pthread_mutex_unlock(&pwm_mutex);
+	    float a1 = get_potentiometer(angle); //Not sure how to integrate this properly
 
 	    snprintf(buf, sizeof(buf), "{\"dt\": %f, \"massflow\": %f, "
 		     "\"heater_mult\": %f}\n",
