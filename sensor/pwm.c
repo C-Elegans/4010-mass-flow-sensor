@@ -40,7 +40,7 @@ struct pwm_context* create_pwm_context(){
     snprintf(buf, sizeof(buf), "%s/enable", ctx->directory);
     printf(buf);
     FILE *enable = fopen(buf, "w");
-    if(!ctx->period) goto err;
+    if(!enable) goto err;
     fprintf(enable, "1");
     fclose(enable);
 
@@ -50,6 +50,7 @@ struct pwm_context* create_pwm_context(){
  err:
     if(ctx->duty_cycle) fclose(ctx->duty_cycle);
     if(ctx->period) fclose(ctx->period);
+    if(enable) fclose(enable);
     free(ctx);
     return NULL;
 }
