@@ -2,9 +2,11 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 import socket
+import json
 
 delay = 0.1
-ymax = 4
+ymax = 2.5
+max_entries = 100
 
 savefile = open('data.txt', 'w')
 
@@ -14,10 +16,14 @@ ax1 = fig.add_subplot(2, 1, 1)
 ax2 = fig.add_subplot(2, 1, 2)
 
 ydata = [0]
+heater_data = [0]
 massdata = [0]
-line1, = ax1.plot(ydata)
-line2, = ax2.plot(massdata)
+line_dt, = ax1.plot(ydata, c='g', label='delta t')
+ax_heater = ax1.twinx()
+line_heater, = ax_heater.plot(ydata, c='r', label='heater %')
+line_massflow, = ax2.plot(massdata)
 ax1.set_ylim([-ymax, ymax])
+ax_heater.set_ylim([0, 1])
 ax2.set_ylim([-4, 4])
 plt.show()
 
@@ -28,20 +34,24 @@ s.connect(("192.168.6.2", 8081))
 s.send(b"start\n")
 
 while True:
-    chunk = s.recv(32)
+    chunk = s.recv(128)
     chunk = chunk.decode('utf-8')
+    data = json.loads(chunk)
 
-    y = [float(s) for s in chunk.split(' ')]
-    savefile.write(chunk)
-    print(y)
-    ydata.append(y[0])
-    massdata.append(y[1])
-    line1.set_ydata(ydata)
-    line1.set_xdata(np.arange(len(ydata)) * delay)
-    line2.set_ydata(massdata)
-    line2.set_xdata(np.arange(len(massdata)) * delay)
-    ax1.set_xlim([0, len(ydata) * delay])
-    ax2.set_xlim([0, len(ydata) * delay])
+    print(data)
+    ydata.append(data['dt'])
+    massdata.append(data['massflow'])
+    heater_data.append(data['heater_mult'])
+    line_dt.set_ydata(ydata)
+    line_dt.set_xdata(np.arange(len(ydata)) * delay)
+    line_heater.set_ydata(heater_data)
+    line_heater.set_xdata(np.arange(len(ydata)) * delay)
+    line_massflow.set_ydata(massdata)
+    line_massflow.set_xdata(np.arange(len(massdata)) * delay)
+
+    maxtime = len(ydata) * delay
+    ax1.set_xlim([max(0, maxtime - max_entries), maxtime])
+    ax2.set_xlim([max(0, maxtime - max_entries), maxtime])
     plt.pause(0.0001)
 
 
