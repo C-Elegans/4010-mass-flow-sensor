@@ -35,13 +35,13 @@ ax_angle.set_xlabel('Angle (deg)')
 ax1.set_ylim([-ymax, ymax])
 ax_heater.set_ylim([0, 100])
 ax2.set_ylim([-4, 4])
-ax_angle.set_ylim([0, 300])
+ax_angle.set_ylim([0, 90])
 
 ax1_lines = [line_dt, line_heater]
 ax1_labels = [l.get_label() for l in ax1_lines]
 ax1.legend(ax1_lines, ax1_labels)
 ax2.legend()
-ax2_lines = [line_heater, line_massflow]
+ax2_lines = [line_angle, line_massflow]
 ax2_labels = [l.get_label() for l in ax2_lines]
 ax2.legend(ax2_lines, ax2_labels)
 plt.show()
