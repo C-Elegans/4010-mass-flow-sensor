@@ -1,6 +1,8 @@
 #include "pwm.h"
 #include <unistd.h>
 
+// This is a sample program used to test the PWM library. It fades an
+// LED up and down
 int main(int argc, char** argv){
     struct pwm_context *pwm = create_pwm_context();
 

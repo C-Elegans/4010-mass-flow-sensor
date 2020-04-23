@@ -1,3 +1,5 @@
+// This is a scalar to slow down the PWM frequency from MHz to a
+// couple hundred Hz
 #define PWM_MULTIPLIER 20000
 struct pwm_context;
 

@@ -35,8 +35,8 @@ float get_heat_capacity(float temp)
 }
 
 /* Calculating the Mass flow 
-This function calculates the Mass flow.
-Parameters are the temp1 and temp2 from the thermistors, and the heat capacity of the air.
+This function calculates the Mass flow from a delta T and the heater power
+Parameters are the temp1 and temp2 from the thermistors, and the heater duty cycle/period
 */
 
 float get_mass_flow(float temp1, float temp2, float power_multiplier)
@@ -52,6 +52,7 @@ float get_mass_flow(float temp1, float temp2, float power_multiplier)
     return M;
 }
 
+// converts a temperature from celcius to kelvin
 float tokelvin(float tempc){
     return tempc + 273.15;
 }
@@ -72,28 +73,33 @@ FILE* temp1 = NULL;
 FILE* temp2 = NULL;
 FILE* angle = NULL;
 
+// Calculates the potentiometer angle from the potentiometer adc file
 float get_potentiometer(FILE * potentiometer_file){
     float angle = getVoltage(potentiometer_file)*AngleRef/VRef;
     return angle;
 }
 
+// calculates the thermistor temperature from the thermistor's resistance
 float get_thermistor_temp(float resistance){
 
     float t_c = (Bvalue/(logf(resistance/r_alpha)))-c2kelvin;
     return t_c;
 }
 
+// calculate the thermistor's resistance from the ADC voltage
 float get_thermistor_resistance(float voltage){
     float r_therm = r_bias * voltage/(vadc - voltage);
     return r_therm;
 }
 
+// initialize the ADC files
 void adc_init(void){
     temp1 = setADC(TEMP1_PIN);
     temp2 = setADC(TEMP2_PIN);
     angle = setADC(ANGLE_PIN);
 }
 
+// get the temperature of a thermistor from the ADC file
 float get_temperature(FILE* thermistor_file){
     float voltage = getVoltage(thermistor_file);
     float resistance = get_thermistor_resistance(voltage);

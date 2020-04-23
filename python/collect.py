@@ -75,8 +75,3 @@ while True:
     ax1.set_xlim([max(0, maxtime - max_entries), maxtime])
     ax2.set_xlim([max(0, maxtime - max_entries), maxtime])
     plt.pause(0.0001)
-
-
-
-
-
